@@ -1,0 +1,46 @@
+import ForecastAccordion from "@/components/ForecastAccordion";
+import { formatDate } from "@/utils/formatDate";
+import { get7DayForecast } from "@/lib/forecast";
+
+export default async function ForecastPage() {
+  const forecast = await get7DayForecast();
+
+  return (
+    <div className="p-6 min-h-screen bg-cover bg-center">
+      <h1 className="text-3xl font-bold text-gray-800 drop-shadow-lg mb-6 text-center">
+        7-dages prognose
+      </h1>
+
+      <div
+        className="bg-white/30 backdrop-blur-md rounded-xl p-6 max-w-4xl mx-auto shadow-lg
+        space-y-4 max-h-[80vh] overflow-auto scrollbar-thin scrollbar-thumb-gray-400/50 scrollbar-track-transparent"
+      >
+        {/* Overskrift */}
+        <div className="grid grid-cols-5 font-semibold text-gray-700 drop-shadow-md text-center mb-2">
+          <div>Dag</div>
+          <div>Vejr</div>
+          <div>Temp (min/max)</div>
+          <div>Vind</div>
+          <div>Regn</div>
+        </div>
+
+        {/* Dage */}
+        {forecast.map((day) => (
+          <ForecastAccordion
+            key={day.date}
+            day={formatDate(day.date)}
+            avgMin={day.avgMin}
+            avgMax={day.avgMax}
+            avgWindSpeed={day.avgWindSpeed}
+            avgWindDir={day.avgWindDir}
+            hourly={day.hourly.map((h) => ({
+              ...h,
+              precipitation: h.precipitation ?? 0, // sørg for nedbør
+            }))}
+            collapsible={true} // Accordion aktiveret
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
