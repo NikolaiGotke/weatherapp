@@ -14,14 +14,13 @@ export default function NavBar() {
     setCity({ lat, lon, name });
   };
 
-  // Klik på hus-ikonet = skift til Bunkeren + gå til forsiden
   const goToBunkeren = () => {
     setCity({
-      lat: 56.153, // koordinater til Bunkeren
+      lat: 56.153,
       lon: 10.203,
       name: "Bunkeren, Better Developers",
     });
-    router.push("/"); // gå til forsiden “I dag”
+    router.push("/");
   };
 
   return (

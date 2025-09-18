@@ -8,7 +8,7 @@ import { get7DayForecast } from "@/lib/forecast";
 import type { DailyForecast } from "@/types/weather";
 
 export default function ForecastPage() {
-  const { city } = useCity(); // Use city from context
+  const { city } = useCity();
   const [forecast, setForecast] = useState<DailyForecast[]>([]);
 
   useEffect(() => {

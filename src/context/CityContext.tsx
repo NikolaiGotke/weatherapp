@@ -13,7 +13,6 @@ interface CityContextProps {
   setCity: (city: City) => void;
 }
 
-// Default by: Bunkeren, Better Developers
 const defaultCity: City = {
   name: "Bunkeren, Better Developers",
   lat: 56.1518,

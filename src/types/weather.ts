@@ -35,11 +35,7 @@ export interface OpenMeteoResponse {
   hourly: Hourly;
 }
 
-// -------------------------------------------------
-// Typer til lokal behandling af forecast data
-// -------------------------------------------------
 
-// Én time i forecast
 export type HourlyItem = {
   time: Date;
   temp: number;
@@ -49,7 +45,6 @@ export type HourlyItem = {
   precipitation: number;
 };
 
-// Én dags forecast inkl. hourly data
 export type DailyForecast = {
   date: string;
   avgMin: number;

@@ -2,8 +2,6 @@
 
 import NavBar from "@/components/NavBar";
 import { CityProvider } from "@/context/CityContext";
-import "@/styles/components.css";
-import "@/styles/scrollbars.css";
 import "./globals.css";
 
 export default function RootLayout({

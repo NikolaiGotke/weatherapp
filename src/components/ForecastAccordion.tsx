@@ -41,7 +41,6 @@ export default function ForecastAccordion({
     setHeight(open ? `${contentRef.current?.scrollHeight}px` : "0px");
   }, [open, hourly]);
 
-  // Total nedbør for dagen
   const totalPrecipitation = hourly.reduce(
     (acc, h) => acc + (h.precipitation ?? 0),
     0

@@ -3,7 +3,7 @@ import { formatDate } from "@/utils/formatDate";
 import { get7DayForecast } from "@/lib/forecast";
 
 export default async function ForecastPage() {
-  const forecast = await get7DayForecast();
+  const forecast = await get7DayForecast(56.1518, 10.2064);
 
   return (
     <div className="p-6 min-h-screen bg-cover bg-center">
@@ -35,9 +35,9 @@ export default async function ForecastPage() {
             avgWindDir={day.avgWindDir}
             hourly={day.hourly.map((h) => ({
               ...h,
-              precipitation: h.precipitation ?? 0, // sørg for nedbør
+              precipitation: h.precipitation ?? 0,
             }))}
-            collapsible={true} // Accordion aktiveret
+            collapsible={true}
           />
         ))}
       </div>

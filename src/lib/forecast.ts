@@ -1,6 +1,5 @@
 import { getWeather as fetchWeather } from "./openMeteo";
 
-// Typing for hourly items
 export type HourlyItem = {
   precipitation: number;
   time: Date;
@@ -10,7 +9,6 @@ export type HourlyItem = {
   winddir: number;
 };
 
-// Typing for daily forecast with hourly
 export type DailyForecast = {
   date: string;
   avgMin: number;
@@ -20,7 +18,6 @@ export type DailyForecast = {
   hourly: HourlyItem[];
 };
 
-// Funktion der henter og strukturerer forecast for en specifik by
 export async function get7DayForecast(
   lat: number,
   lon: number
@@ -28,7 +25,6 @@ export async function get7DayForecast(
   const weatherData = await fetchWeather(lat, lon);
   const daily = weatherData.daily;
 
-  // Lav hourly items
   const hourlyData: HourlyItem[] = weatherData.hourly.time.map((t, i) => ({
     time: new Date(t),
     temp: weatherData.hourly.temperature_2m[i],
@@ -38,7 +34,6 @@ export async function get7DayForecast(
     precipitation: weatherData.hourly.precipitation?.[i] ?? 0,
   }));
 
-  // Split hourly pr dag og lav gennemsnit
   return daily.time.map((dateStr) => {
     const hourlyForDay = hourlyData
       .filter(
@@ -47,7 +42,7 @@ export async function get7DayForecast(
           h.time.getMonth() === new Date(dateStr).getMonth() &&
           h.time.getFullYear() === new Date(dateStr).getFullYear()
       )
-      .filter((_, idx) => idx % 3 === 0); // hver 3. time
+      .filter((_, idx) => idx % 3 === 0);
 
     const temps = hourlyForDay.map((h) => h.temp);
     const winds = hourlyForDay.map((h) => h.windspeed);

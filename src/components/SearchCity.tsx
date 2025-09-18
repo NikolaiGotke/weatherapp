@@ -18,7 +18,6 @@ export default function SearchCity({ onSelectCity }: Props) {
   const [results, setResults] = useState<CityResult[]>([]);
   const [highlightIndex, setHighlightIndex] = useState(-1);
 
-  // hent forslag når query ændres
   useEffect(() => {
     if (!query) {
       setResults([]);
@@ -42,8 +41,8 @@ export default function SearchCity({ onSelectCity }: Props) {
 
   const handleSelect = (city: CityResult) => {
     onSelectCity(city.latitude, city.longitude, city.name);
-    setQuery(""); // ryd inputfeltet
-    setResults([]); // luk dropdown
+    setQuery(""); 
+    setResults([]); 
     setHighlightIndex(-1);
   };
 
