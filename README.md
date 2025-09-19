@@ -34,11 +34,6 @@ Data hentes fra [Open-Meteo](https://open-meteo.com/) API, som ikke kræver API-
 ### Genvej
 - Hus-ikon som hurtigt sætter by til “Bunkeren, Better Developers” og navigerer til forsiden
 
-### Design / UX
-- Lækkert overlay med `backdrop-blur` og semi-transparent baggrund
-- Scrollbare sektioner med custom scrollbar styling
-- Responsive grid: Mobile/desktop
-
 ---
 
 ## Installation
