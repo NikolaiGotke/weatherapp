@@ -1,10 +1,13 @@
 import type { OpenMeteoResponse } from "@/types/weather";
 
+// Funktion til at hente vejrdata fra Open-Meteo API
 export async function getWeather(
   lat: number,
   lon: number
 ): Promise<OpenMeteoResponse> {
   const base = "https://api.open-meteo.com/v1/forecast";
+
+  // URLSearchParams bruges til at bygge querystring på en sikker måde
   const params = new URLSearchParams({
     latitude: String(lat),
     longitude: String(lon),
@@ -21,6 +24,7 @@ export async function getWeather(
   const res = await fetch(`${base}?${params.toString()}`, {
     next: { revalidate: 300 },
   });
+
   if (!res.ok)
     throw new Error(`OpenMeteo fetch failed: ${res.status} ${res.statusText}`);
 

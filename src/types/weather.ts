@@ -1,3 +1,4 @@
+// Repræsenterer nuværende vejr fra API
 export interface CurrentWeather {
   temperature: number;
   windspeed: number;
@@ -6,6 +7,7 @@ export interface CurrentWeather {
   time: string;
 }
 
+// Daglige opsummeringer fra API
 export interface Daily {
   time: string[];
   temperature_2m_max: number[];
@@ -17,6 +19,7 @@ export interface Daily {
   winddirection_10m_dominant?: number[];
 }
 
+// Time-for-time data fra API
 export interface Hourly {
   time: string[];
   temperature_2m: number[];
@@ -26,6 +29,7 @@ export interface Hourly {
   winddirection_10m?: number[];
 }
 
+// Samlet respons fra Open-Meteo API
 export interface OpenMeteoResponse {
   latitude: number;
   longitude: number;
@@ -35,6 +39,7 @@ export interface OpenMeteoResponse {
   hourly: Hourly;
 }
 
+// Egen interne type for håndtering af time-for-time data i UI
 export type HourlyItem = {
   time: Date;
   temp: number;
@@ -44,6 +49,7 @@ export type HourlyItem = {
   precipitation?: number;
 };
 
+// Egen interne type for daglige prognoser, brugt i 7-dages oversigt
 export type DailyForecast = {
   date: string;
   avgMin: number;

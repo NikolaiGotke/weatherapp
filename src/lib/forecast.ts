@@ -1,15 +1,9 @@
 import { getWeather as fetchWeather } from "./openMeteo";
-import type { HourlyItem } from "@/types/weather";
+import type { DailyForecast, HourlyItem } from "@/types/weather";
+import { mapHourlyToItems } from "@/utils/mapHourly";
+import { filterHourlyByDay } from "@/utils/filterHourly";
 
-export type DailyForecast = {
-  date: string;
-  avgMin: number;
-  avgMax: number;
-  avgWindSpeed: number;
-  avgWindDir: number;
-  hourly: HourlyItem[];
-};
-
+// Funktion til at hente 7-dages prognose baseret på lat/lon
 export async function get7DayForecast(
   lat: number,
   lon: number
@@ -17,25 +11,17 @@ export async function get7DayForecast(
   const weatherData = await fetchWeather(lat, lon);
   const daily = weatherData.daily;
 
-  const hourlyData: HourlyItem[] = weatherData.hourly.time.map((t, i) => ({
-    time: new Date(t),
-    temp: weatherData.hourly.temperature_2m[i],
-    code: weatherData.hourly.weathercode[i],
-    windspeed: weatherData.hourly.windspeed_10m?.[i] ?? 0,
-    winddir: weatherData.hourly.winddirection_10m?.[i] ?? 0,
-    precipitation: weatherData.hourly.precipitation?.[i] ?? 0,
-  }));
+  // Mapper alle time-for-time data til HourlyItem-objekter via central helper
+  const hourlyData: HourlyItem[] = mapHourlyToItems(weatherData.hourly);
 
+  // Mapper hver dag i daily.time til en DailyForecast
   return daily.time.map((dateStr) => {
-    const hourlyForDay = hourlyData
-      .filter(
-        (h) =>
-          h.time.getDate() === new Date(dateStr).getDate() &&
-          h.time.getMonth() === new Date(dateStr).getMonth() &&
-          h.time.getFullYear() === new Date(dateStr).getFullYear()
-      )
-      .filter((_, idx) => idx % 3 === 0);
+    const dayDate = new Date(dateStr);
 
+    // Filtrerer time-for-time data til den aktuelle dag og tager kun hver 3. time
+    const hourlyForDay = filterHourlyByDay(hourlyData, dayDate, 3);
+
+    // Beregner min/max og gennemsnit for temperatur og vind
     const temps = hourlyForDay.map((h) => h.temp);
     const winds = hourlyForDay.map((h) => h.windspeed);
 
@@ -44,12 +30,10 @@ export async function get7DayForecast(
     const avgWindSpeed = winds.length
       ? winds.reduce((a, b) => a + b, 0) / winds.length
       : 0;
-
-    const avgWindDir =
-      hourlyForDay.length > 0
-        ? hourlyForDay.reduce((sum, h) => sum + h.winddir, 0) /
-          hourlyForDay.length
-        : 0;
+    const avgWindDir = hourlyForDay.length
+      ? hourlyForDay.reduce((sum, h) => sum + h.winddir, 0) /
+        hourlyForDay.length
+      : 0;
 
     return {
       date: dateStr,

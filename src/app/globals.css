@@ -3,7 +3,7 @@
 /* Import Weather Icons */
 @import "weather-icons/css/weather-icons.min.css";
 
-
+/* Standard font-family for hele applikationen */
 body {
   font-family: "Geist", sans-serif;
 }

@@ -9,27 +9,23 @@ import type { DailyForecast } from "@/types/weather";
 
 export default function ForecastPage() {
   const { city } = useCity();
+  // Jeg bruger Context, så prognosen automatisk opdateres, når brugeren skifter by
+
   const [forecast, setForecast] = useState<DailyForecast[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
-      setError(null);
+    setLoading(true);
+    setError(null);
 
-      try {
-        const data = await get7DayForecast(city.lat, city.lon);
-        setForecast(data);
-      } catch (err) {
-        console.error(err);
-        setError("Kunne ikke hente 7-dages prognose. Prøv igen senere.");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
+    // Jeg bruger get7DayForecast fra lib, så data-fetching og mapping er centraliseret
+    get7DayForecast(city.lat, city.lon)
+      .then(setForecast) // Jeg gemmer hele 7-dages prognosen i state
+      .catch(() =>
+        setError("Kunne ikke hente 7-dages prognose. Prøv igen senere.")
+      )
+      .finally(() => setLoading(false)); // Jeg sørger for at loading state altid stoppes
   }, [city]);
 
   if (loading)
@@ -47,7 +43,7 @@ export default function ForecastPage() {
         className="bg-white/30 backdrop-blur-md rounded-xl p-6 max-w-4xl mx-auto shadow-lg
         space-y-4 max-h-[80vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-400/50 scrollbar-track-transparent"
       >
-        {/* Overskrift */}
+        {/* Jeg bruger grid med kolonner */}
         <div className="grid grid-cols-5 font-semibold text-gray-700 drop-shadow-md text-center mb-2">
           <div>Dag</div>
           <div>Vejr</div>
@@ -56,7 +52,7 @@ export default function ForecastPage() {
           <div>Regn</div>
         </div>
 
-        {/* Dage */}
+        {/* Jeg bruger ForecastAccordion for hver dag for at kunne folde time-for-time detaljer ud */}
         {forecast.map((day) => (
           <ForecastAccordion
             key={day.date}
@@ -66,7 +62,7 @@ export default function ForecastPage() {
             avgWindSpeed={day.avgWindSpeed}
             avgWindDir={day.avgWindDir}
             hourly={day.hourly}
-            collapsible={true}
+            collapsible={true} // Jeg gør det foldbart, så UI bliver mere overskueligt
           />
         ))}
       </div>
