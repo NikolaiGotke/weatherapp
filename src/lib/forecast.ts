@@ -1,13 +1,5 @@
 import { getWeather as fetchWeather } from "./openMeteo";
-
-export type HourlyItem = {
-  precipitation: number;
-  time: Date;
-  temp: number;
-  code: number;
-  windspeed: number;
-  winddir: number;
-};
+import type { HourlyItem } from "@/types/weather";
 
 export type DailyForecast = {
   date: string;

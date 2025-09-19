@@ -9,7 +9,7 @@ type Props = {
   code: number;
   windSpeed: number;
   windDir: number;
-  precipitation: number;
+  precipitation?: number;
   cityName?: string;
   time?: Date;
 };
@@ -65,7 +65,7 @@ export default function CurrentWeather({
 
       {/* Regn */}
       <div className="flex items-center justify-center gap-1">
-        <PrecipitationIndicator precipitation={precipitation} />
+        <PrecipitationIndicator precipitation={precipitation ?? 0} />
       </div>
     </div>
   );

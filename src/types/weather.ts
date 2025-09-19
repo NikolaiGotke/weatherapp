@@ -35,14 +35,13 @@ export interface OpenMeteoResponse {
   hourly: Hourly;
 }
 
-
 export type HourlyItem = {
   time: Date;
   temp: number;
   code: number;
   windspeed: number;
   winddir: number;
-  precipitation: number;
+  precipitation?: number;
 };
 
 export type DailyForecast = {

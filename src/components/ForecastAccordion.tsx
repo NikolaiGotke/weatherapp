@@ -4,15 +4,8 @@ import { useState, useRef, useEffect } from "react";
 import { FaArrowUp, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { weatherCodeToIcon } from "@/utils/weatherCodeToIcon";
 import PrecipitationIndicator from "./PrecipitationIndicator";
+import type { HourlyItem } from "@/types/weather";
 
-type HourlyItem = {
-  time: Date;
-  temp: number;
-  code: number;
-  windspeed: number;
-  winddir: number;
-  precipitation?: number;
-};
 
 type Props = {
   day: string;
