@@ -10,14 +10,32 @@ import type { DailyForecast } from "@/types/weather";
 export default function ForecastPage() {
   const { city } = useCity();
   const [forecast, setForecast] = useState<DailyForecast[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData() {
-      const data = await get7DayForecast(city.lat, city.lon);
-      setForecast(data);
+      setLoading(true);
+      setError(null);
+
+      try {
+        const data = await get7DayForecast(city.lat, city.lon);
+        setForecast(data);
+      } catch (err) {
+        console.error(err);
+        setError("Kunne ikke hente 7-dages prognose. Prøv igen senere.");
+      } finally {
+        setLoading(false);
+      }
     }
+
     fetchData();
   }, [city]);
+
+  if (loading)
+    return <div className="text-center mt-10">Henter 7-dages prognose…</div>;
+  if (error)
+    return <div className="text-center mt-10 text-red-600">{error}</div>;
 
   return (
     <div className="p-6 min-h-screen bg-cover bg-center">

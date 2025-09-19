@@ -11,48 +11,64 @@ export default function HomePage() {
   const { city } = useCity();
   const [hourlyToday, setHourlyToday] = useState<HourlyItem[]>([]);
   const [currentWeather, setCurrentWeather] = useState<HourlyItem | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getWeather(city.lat, city.lon);
-      const now = new Date();
+      setLoading(true);
+      setError(null);
 
-      const idxNow = data.hourly.time.findIndex(
-        (t: string) => new Date(t).getTime() >= now.getTime()
-      );
+      try {
+        const data = await getWeather(city.lat, city.lon);
+        const now = new Date();
 
-      const current: HourlyItem = {
-        time: new Date(data.hourly.time[idxNow]),
-        temp: data.hourly.temperature_2m[idxNow],
-        code: data.hourly.weathercode[idxNow],
-        windspeed: data.hourly.windspeed_10m?.[idxNow] ?? 0,
-        winddir: data.hourly.winddirection_10m?.[idxNow] ?? 0,
-        precipitation: data.hourly.precipitation?.[idxNow] ?? 0,
-      };
+        const idxNow = data.hourly.time.findIndex(
+          (t: string) => new Date(t).getTime() >= now.getTime()
+        );
 
-      const hourlyFiltered: HourlyItem[] = data.hourly.time
-        .map((t, i) => ({
-          time: new Date(t),
-          temp: data.hourly.temperature_2m[i],
-          code: data.hourly.weathercode[i],
-          windspeed: data.hourly.windspeed_10m?.[i] ?? 0,
-          winddir: data.hourly.winddirection_10m?.[i] ?? 0,
-          precipitation: data.hourly.precipitation?.[i] ?? 0,
-        }))
-        .filter(
-          (item) =>
-            item.time.getDate() === now.getDate() &&
-            item.time.getMonth() === now.getMonth() &&
-            item.time.getFullYear() === now.getFullYear()
-        )
-        .filter((_, i) => i % 3 === 0);
+        const current: HourlyItem = {
+          time: new Date(data.hourly.time[idxNow]),
+          temp: data.hourly.temperature_2m[idxNow],
+          code: data.hourly.weathercode[idxNow],
+          windspeed: data.hourly.windspeed_10m?.[idxNow] ?? 0,
+          winddir: data.hourly.winddirection_10m?.[idxNow] ?? 0,
+          precipitation: data.hourly.precipitation?.[idxNow] ?? 0,
+        };
 
-      setCurrentWeather(current);
-      setHourlyToday(hourlyFiltered);
+        const hourlyFiltered: HourlyItem[] = data.hourly.time
+          .map((t, i) => ({
+            time: new Date(t),
+            temp: data.hourly.temperature_2m[i],
+            code: data.hourly.weathercode[i],
+            windspeed: data.hourly.windspeed_10m?.[i] ?? 0,
+            winddir: data.hourly.winddirection_10m?.[i] ?? 0,
+            precipitation: data.hourly.precipitation?.[i] ?? 0,
+          }))
+          .filter(
+            (item) =>
+              item.time.getDate() === now.getDate() &&
+              item.time.getMonth() === now.getMonth() &&
+              item.time.getFullYear() === now.getFullYear()
+          )
+          .filter((_, i) => i % 3 === 0);
+
+        setCurrentWeather(current);
+        setHourlyToday(hourlyFiltered);
+      } catch (err) {
+        console.error(err);
+        setError("Kunne ikke hente vejrdata. Prøv igen senere.");
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchData();
   }, [city]);
+
+  if (loading) return <div className="text-center mt-10">Henter vejr…</div>;
+  if (error)
+    return <div className="text-center mt-10 text-red-600">{error}</div>;
 
   const today = new Date();
   const dateString = today.toLocaleDateString("da-DK", {

@@ -3,12 +3,6 @@
 /* Import Weather Icons */
 @import "weather-icons/css/weather-icons.min.css";
 
-/* Fonts og body */
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
 
 body {
   font-family: "Geist", sans-serif;

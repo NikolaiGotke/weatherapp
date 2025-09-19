@@ -11,7 +11,6 @@ type Props = {
   windDir: number;
   precipitation: number;
   cityName?: string;
-  uvIndex?: number;
   time?: Date;
 };
 
@@ -22,7 +21,6 @@ export default function CurrentWeather({
   windDir,
   precipitation,
   cityName,
-  uvIndex,
   time,
 }: Props) {
   const { icon, color } = weatherCodeToIcon(code);
@@ -31,7 +29,7 @@ export default function CurrentWeather({
     <div className="bg-white/30 backdrop-blur-md rounded-xl p-6 shadow-lg flex flex-col items-center justify-center">
       {/* By */}
       <div className="text-2xl text-center text-gray-800 font-semibold mb-3 bg-center">
-        {cityName &&  <span> {cityName}</span>}
+        {cityName && <span> {cityName}</span>}
       </div>
 
       <h2 className="text-1 font-semibold text-gray-800 mb-4">
@@ -55,11 +53,6 @@ export default function CurrentWeather({
       <div className="text-gray-800 text-3xl font-bold mb-2">
         {Math.round(temp)}°C
       </div>
-
-      {/* UV-indeks */}
-      {uvIndex !== undefined && (
-        <div className="text-xs text-yellow-700 mb-2">UV-indeks: {uvIndex}</div>
-      )}
 
       {/* Vind */}
       <div className="flex items-center justify-center gap-2 text-gray-800 mb-2">

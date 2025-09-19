@@ -12,8 +12,8 @@ export default function PrecipitationIndicator({ precipitation }: Props) {
       <FaTint
         className={
           precipitation > 0
-            ? "text-blue-500 text-lg" 
-            : "text-gray-900 text-lg opacity-40" 
+            ? "text-blue-500 text-lg"
+            : "text-gray-900 text-lg opacity-40"
         }
       />
       <span className="text-gray-800 text-sm">
