@@ -23,7 +23,6 @@ Data hentes fra [Open-Meteo](https://open-meteo.com/) API, som ikke kræver API-
 ### 7-dages prognose
 - Hver dag viser min/max temperatur, vind, nedbør og vejrkode
 - Accordion for hver dag med time-for-time visning (hver 3. time)
-- Lækkert overlay med gennemsigtig baggrund
 
 ### Søg efter by
 - Søgefelt med placeholder “Søg efter by”
