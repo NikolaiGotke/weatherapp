@@ -1,4 +1,5 @@
 import type { OpenMeteoResponse } from "@/types/weather";
+import { fetchWithRetry } from "./fetchWithRetry";
 
 // Funktion til at hente vejrdata fra Open-Meteo API
 export async function getWeather(
@@ -21,12 +22,11 @@ export async function getWeather(
     windspeed_unit: "ms",
   });
 
-  const res = await fetch(`${base}?${params.toString()}`, {
-    next: { revalidate: 300 },
-  });
-
-  if (!res.ok)
-    throw new Error(`OpenMeteo fetch failed: ${res.status} ${res.statusText}`);
-
-  return res.json();
+  // Brug fetchWithRetry så den prøver igen op til 3 gange ved fejl
+  return fetchWithRetry<OpenMeteoResponse>(
+    `${base}?${params.toString()}`,
+    { next: { revalidate: 300 } },
+    3, 
+    1000
+  );
 }

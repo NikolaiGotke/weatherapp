@@ -71,6 +71,7 @@ export default function NavBar() {
 
           {/* Komponent til at søge og vælge by */}
           <SearchCity onSelectCity={handleCitySelect} />
+
         </div>
       </div>
     </nav>

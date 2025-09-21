@@ -7,7 +7,7 @@ import "./globals.css";
 /*
   RootLayout fungerer som den overordnede wrapper for hele appen.
   - Indeholder global state via CityProvider, så alle komponenter kan tilgå den valgte by.
-  - Sørger for, at baggrund, scroll og layout-struktur håndteres konsistent på tværs af sider.
+  - Sørger for, at baggrund og layout-struktur håndteres konsistent på tværs af sider.
 */
 
 export default function RootLayout({

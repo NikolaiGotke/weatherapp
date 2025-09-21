@@ -8,9 +8,7 @@ import { get7DayForecast } from "@/lib/forecast";
 import type { DailyForecast } from "@/types/weather";
 
 export default function ForecastPage() {
-  const { city } = useCity();
-  // Jeg bruger Context, så prognosen automatisk opdateres, når brugeren skifter by
-
+  const { city } = useCity(); // Jeg bruger Context, så prognosen automatisk opdateres, når brugeren skifter by
   const [forecast, setForecast] = useState<DailyForecast[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);

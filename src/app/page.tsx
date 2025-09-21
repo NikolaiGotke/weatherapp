@@ -10,7 +10,6 @@ import { formatDate } from "@/utils/formatDate";
 
 export default function HomePage() {
   const { city } = useCity(); // Jeg henter den valgte by fra Context, så hele appen automatisk opdateres ved byskift
-
   const [hourlyToday, setHourlyToday] = useState<HourlyItem[]>([]);
   const [currentWeather, setCurrentWeather] = useState<HourlyItem | null>(null);
   const [loading, setLoading] = useState(true);
@@ -21,7 +20,7 @@ export default function HomePage() {
     setError(null);
 
     // Jeg bruger getTodayHourly helperen for at centralisere mapping af API-data
-    getTodayHourly(city.lat, city.lon)
+    getTodayHourly(city.lat, city.lon, city.name)
       .then(({ current, hourlyToday }) => {
         setCurrentWeather(current); // Jeg gemmer current weather separat, så jeg kan fremhæve det i UI
         setHourlyToday(hourlyToday); // Jeg gemmer time-for-time data for at kunne vise dagens forecast overskueligt
