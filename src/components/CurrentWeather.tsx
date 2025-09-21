@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { FaArrowUp } from "react-icons/fa";
 import { weatherCodeToIcon } from "@/utils/weatherCodeToIcon";
 import PrecipitationIndicator from "./PrecipitationIndicator";
@@ -28,27 +29,37 @@ export default function CurrentWeather({
   // Konverterer vejrkode til ikon + farve
   const { icon, color } = weatherCodeToIcon(code);
 
+  // State til live tid
+  const [currentTime, setCurrentTime] = useState(time || new Date());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 60000); // Opdater hvert minut
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="bg-white/30 backdrop-blur-md rounded-xl p-6 shadow-lg flex flex-col items-center justify-center">
       {/* Bynavn */}
-      <div className="text-2xl text-center text-gray-800 font-semibold mb-3 bg-center">
-        {cityName && <span> {cityName}</span>}
-      </div>
+      {cityName && (
+        <div className="text-2xl text-center text-gray-800 font-semibold mb-3">
+          {cityName}
+        </div>
+      )}
 
       {/* Overskrift */}
-      <h2 className="text-1 font-semibold text-gray-800 mb-4">
+      <h2 className="text-lg font-semibold text-gray-800 mb-2">
         Vejret lige nu
       </h2>
 
-      {/* Tidspunkt */}
-      {time && (
-        <div className="text-xs text-gray-500 mb-2">
-          {time.toLocaleTimeString("da-DK", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </div>
-      )}
+      {/* Live klokkeslæt */}
+      <div className="text-sm text-gray-800 mb-4">
+        {currentTime.toLocaleTimeString("da-DK", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}
+      </div>
 
       {/* Vejrikon */}
       <i className={`${icon} text-6xl ${color} drop-shadow-md mb-4`}></i>
@@ -59,7 +70,6 @@ export default function CurrentWeather({
       </div>
 
       {/* Vind */}
-      {/* Pil roteres med vindretning */}
       <div className="flex items-center justify-center gap-2 text-gray-800 mb-2">
         <FaArrowUp
           className="drop-shadow-md"
@@ -69,7 +79,6 @@ export default function CurrentWeather({
       </div>
 
       {/* Nedbør */}
-      {/* PrecipitationIndicator håndterer visning af regnmængde */}
       <div className="flex items-center justify-center gap-1">
         <PrecipitationIndicator precipitation={precipitation} />
       </div>
